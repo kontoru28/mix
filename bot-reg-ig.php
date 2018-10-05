@@ -135,11 +135,11 @@ function register(){
 $ig_header = ig_header();
 $ch = curl_init(); 
 curl_setopt($ch, CURLOPT_URL, "https://www.instagram.com/accounts/web_create_ajax/"); 
-curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); 
-curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-curl_setopt($ch, CURLOPT_HTTPPROXYTUNNEL, 0);
-curl_setopt($ch, CURLOPT_TIMEOUT, 200);
-curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+curl_setopt($ch, CURLOPT_HEADER, 1);
+curl_setopt($ch, CURLOPT_TIMEOUT, 15);
 curl_setopt($ch, CURLOPT_HTTPHEADER, array(
 'origin: https://www.instagram.com',  
 'accept-language: en-US,en;q=0.9,id;q=0.8', 
