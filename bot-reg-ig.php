@@ -131,34 +131,66 @@ function save($name, $isi)
     fwrite($jud1, $isi . "\n");
     fclose($jud1);
 }
+function randd($length = 10) {
+    $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    $charactersLength = strlen($characters);
+    $randomString = '';
+    for ($i = 0; $i < $length; $i++) {
+        $randomString .= $characters[rand(0, $charactersLength - 1)];
+    }
+    return $randomString;
+}
+function getmid(){
+  $ch = curl_init();
+  curl_setopt($ch, CURLOPT_URL, "https://www.instagram.com/accounts/web_create_ajax/");
+  curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+  curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+  curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+  curl_setopt($ch, CURLOPT_HEADER, 1);
+  curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+'accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
+'accept-encoding: gzip, deflate, br',
+'accept-language: en-US,en;q=0.9,id;q=0.8',
+'cache-control: max-age=0',
+'upgrade-insecure-requests: 1',
+'user-agent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.62 Safari/537.36',
+  ));
+  curl_setopt($ch, CURLOPT_POSTFIELDS,"lalalayeyeye");
+  $res = curl_exec($ch);
+  $header = substr($res, 0, curl_getinfo($ch, CURLINFO_HEADER_SIZE));
+  $body = substr($res, curl_getinfo($ch, CURLINFO_HEADER_SIZE));
+  curl_close($ch);
+  $cookie = getstr($header, "csrftoken=",";");
+  return getstr($header,"mid=",";");
+  }
 function register(){
 $ig_header = ig_header();
 $ch = curl_init(); 
 curl_setopt($ch, CURLOPT_URL, "https://www.instagram.com/accounts/web_create_ajax/"); 
-curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
-curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-curl_setopt($ch, CURLOPT_HEADER, 1);
-curl_setopt($ch, CURLOPT_TIMEOUT, 15);
+curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); 
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+curl_setopt($ch, CURLOPT_HTTPPROXYTUNNEL, 0);
+curl_setopt($ch, CURLOPT_TIMEOUT, 200);
+curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
 curl_setopt($ch, CURLOPT_HTTPHEADER, array(
 'origin: https://www.instagram.com',  
 'accept-language: en-US,en;q=0.9,id;q=0.8', 
 'x-requested-with: XMLHttpRequest', 
-'cookie: mcd=3; mid=W7cqVgAEAAFGCZwbTWMBTXA2Gw9N; csrftoken='.$ig_header["csrftoken"].'; rur=PRN',
+'cookie: mcd=3; mid='.getmid().'; csrftoken='.$ig_header["csrftoken"].'; rur=FRC',
 'x-csrftoken: '.$ig_header["csrftoken"], 
 'x-instagram-ajax: f5d5cf4eb5df',
-'content-type: application/x-www-form-urlencoded',
-'accept: */*', 
+'content-type: application/x-www-form-urlencoded', 
 'referer: https://www.instagram.com/',
 'authority: www.instagram.com'
 ));
-$email = "zx-ciseqma".rand(000000,99999999)."@gmail.com";
+$email = "ciseu".rand(000000,99999999)."@gmail.com";
 $username = "ardzz_bot.id_".rand(000000,9999999);
+$password = $username.randd();
 curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query([
 "email" => $email,
-"password" => "ardan_ganteng123",
+"password" => $password,
 "username" => $username,
-"firstname" => "Ardzz",
+"firstname" => "IG",
 "seamless_login_enabled" => "1",
 "tos_version" => "row",
 "opt_into_one_tap" => "false"
@@ -173,15 +205,22 @@ if ($response["account_created"] == 1) {
 	echo "Username     : ".$username."\n";
 	echo "Id User      : ".$response["user_id"]."\n";
 	echo "Email        : ".$email."\n";
-	echo "Password     : ardan_ganteng123\n";
-	echo "MD5 Password : ".md5("ardan_ganteng123")."\n";
-	echo "Is Exist     : ".cek_user($username)."\n";
-	save("accounts-ig.lst",$username."|ardan_ganteng123 => [ $email - ".$response["user_id"]." ]");
+	echo "Password     : $password\n";
+	echo "MD5 Password : ".md5($password)."\n";
+	//echo "Is Exist     : ".cek_user($username)."\n";
+	save("accounts-ig.lst",$username."|$password => [ $email - ".$response["user_id"]." ]");
 }else{
 	echo "Account Isn't Created\n";
-	echo $res;
+	echo $response["errors"]["ip"][0]."\n";
 }
 }
 //print_r(ig_header());
+$loop = 10;
+$xx=1;
+$delay=2;
+for ($x=1; $x<=$loop; $x++) {
+sleep($delay);
+echo "[".$xx++."/$loop]";
 register();
+}
 ?>
