@@ -153,9 +153,9 @@ function getmid(){
 'accept-language: en-US,en;q=0.9,id;q=0.8',
 'cache-control: max-age=0',
 'upgrade-insecure-requests: 1',
-'user-agent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.62 Safari/537.36',
+'user-agent: '.getUserAgent(),
   ));
-  curl_setopt($ch, CURLOPT_POSTFIELDS,"lalalayeyeye");
+  curl_setopt($ch, CURLOPT_POSTFIELDS,randd());
   $res = curl_exec($ch);
   $header = substr($res, 0, curl_getinfo($ch, CURLINFO_HEADER_SIZE));
   $body = substr($res, curl_getinfo($ch, CURLINFO_HEADER_SIZE));
@@ -176,16 +176,17 @@ curl_setopt($ch, CURLOPT_HTTPHEADER, array(
 'origin: https://www.instagram.com',  
 'accept-language: en-US,en;q=0.9,id;q=0.8', 
 'x-requested-with: XMLHttpRequest', 
-'cookie: mcd=3; mid='.getmid().'; csrftoken='.$ig_header["csrftoken"].'; rur=FRC',
+'cookie: mcd=3; mid=W7mTHQAEAAFwrt1TjqCfL2InCQ5K; csrftoken='.$ig_header["csrftoken"].'; rur=FRC',
 'x-csrftoken: '.$ig_header["csrftoken"], 
 'x-instagram-ajax: f5d5cf4eb5df',
 'content-type: application/x-www-form-urlencoded', 
 'referer: https://www.instagram.com/',
 'authority: www.instagram.com'
 ));
-$email = "ciseu".rand(000000,99999999)."@gmail.com";
+$email = "ardzz_bot".rand(000000,99999999)."@gmail.com";
 $username = "ardzz_bot.id_".rand(000000,9999999);
-$password = $username.randd();
+#$password = $username.randd();
+$password = "ardan_ganteng123";
 curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query([
 "email" => $email,
 "password" => $password,
@@ -196,16 +197,22 @@ curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query([
 "opt_into_one_tap" => "false"
 	]));
 curl_setopt($ch, CURLOPT_HEADER, 0);
-curl_setopt($ch,CURLOPT_USERAGENT,getUserAgent());
 $res = curl_exec($ch);
 $response = json_decode($res,1);
 curl_close($ch);
 if ($response["account_created"] == 1) {
-	echo "Account Created!\n";
-	echo "Username     : ".$username."\n";
+	$green = "\e[1;92m";
+$cyan = "\e[1;36m";
+$normal = "\e[0m";
+$blue = "\e[34m";
+$green1 = "\e[0;92m";
+$yellow = "\e[93m";
+$red = "\e[91m";
+	echo $green1."Account Created!\n".$normal;
+	echo "Username     : ".$cyan.$username.$normal."\n";
 	echo "Id User      : ".$response["user_id"]."\n";
-	echo "Email        : ".$email."\n";
-	echo "Password     : $password\n";
+	echo "Email        : ".$cyan.$email.$normal."\n";
+	echo "Password     : ".$cyan.$password."\n".$normal;
 	echo "MD5 Password : ".md5($password)."\n";
 	//echo "Is Exist     : ".cek_user($username)."\n";
 	save("accounts-ig.lst",$username."|$password => [ $email - ".$response["user_id"]." ]");
@@ -214,13 +221,12 @@ if ($response["account_created"] == 1) {
 	echo $response["errors"]["ip"][0]."\n";
 }
 }
-//print_r(ig_header());
-$loop = 10;
+//rint_r(ig_header());
+$loop = 100;
 $xx=1;
-$delay=2;
 for ($x=1; $x<=$loop; $x++) {
-sleep($delay);
-echo "[".$xx++."/$loop]";
+sleep(2);
+echo "[".$xx++."/$loop]=> ";
 register();
 }
 ?>
